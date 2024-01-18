@@ -1,0 +1,7 @@
+edge_182l 	0	5071292	not_real	not_real
+edge_361l 	0	4044733	not_real	not_real
+edge_10782l 	0	3645972	not_real	not_real
+edge_382l 	0	3529341	not_real	not_real
+edge_9805l 	0	2466086	not_real	not_real
+edge_9586l 	0	1279328	not_real	not_real
+edge_3683l 	0	1187122	not_real	not_real
