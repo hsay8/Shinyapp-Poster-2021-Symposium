@@ -2,13 +2,11 @@
 #Run this AFTER you've done all the previous analysis
 mkdir ./circos
 #Get final size (after polishing) and mean depth for all contigs in the folder from mosdepth output.
-for file in ./mosdepth/polished/*/*.mosdepth.summary.txt; do awk 'FNR==2 {printf $1 "\t"; printf $2 "\t" ; printf "not_real" "\t"; printf "not_real" "\n"}' ${file}; done > cytoband.txt
+for file in ./mosdepth/polished_depth/*.mosdepth.summary.txt; do awk 'FNR==2 {filename="${file}"; printf $filename "\t"; printf $2 "\t" ;printf "not_real" "\t";printf "not_real" "\n"}' ${file}; done > ./circos/cytoband.txt
 
-for file in ./mosdepth/polished/*/*.mosdepth.summary.txt; do awk 'FNR==2 {filename=${file}; printf $1 "\t"; printf $2 "\t" ;printf "not_real" "\t";printf "not_real" "\n"}' ${file}; done > ./circos/cytoband.txt
-
-#Get GC content of final polished assemblies
+#Get GC content per 1000 base windows of final polished assemblies. Make sure you have the R script path correctly set
 for file in ./final_assemblies/*.fasta; do Rscript 0-scripts_tools/circlize_gc_information.R -i $file -o ./circos/${file##*/}.txt;done
-
+ 
 #Convert prokka output to bed for plotting CDS+ and CDS-, tRNA and rRNA. Run each line separately.
 mkdir ./prokka/beds
 find ./prokka/* -name '*.gff' -exec cp "{}" ./prokka/beds \;
