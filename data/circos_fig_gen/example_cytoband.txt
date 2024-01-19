@@ -1,0 +1,9 @@
+contig_144	0	contig_144	not_real	not_real
+contig_1993 	0	contig_1993 	not_real	not_real
+contig_965 	0	contig_965 	not_real	not_real
+contig_1636 	0	contig_1636 	not_real	not_real
+contig_2133 	0	contig_2133 	not_real	not_real
+contig_685 	0	contig_685 	not_real	not_real
+contig_2374 	0	contig_2374 	not_real	not_real
+contig_172 	0	contig_172 	not_real	not_real
+contig_1154 	0	contig_1154 	not_real	not_real
