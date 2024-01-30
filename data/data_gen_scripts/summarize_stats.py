@@ -28,6 +28,16 @@ def get_size(fasta_name):
     except FileNotFoundError:
         print(f"Fasta file not found for {fasta_name}.")
 
+#Get coverage from mosdepth results
+def get_coverage(fasta_name):
+    try:
+        with open(f"./mosdepth/polished_depth/{fasta_name}.mosdepth.summary.txt") as mosdepth_file:
+            for line in mosdepth_file.readlines()[1:-3]:
+                columns = line.strip().split()
+                return columns[-3]
+    except FileNotFoundError:
+        print(f"Coverage file not found for {fasta_name}. Check mosdepth output.")
+
 #Get completeness from checkm results
 def get_completeness(fasta_name):
     try:
@@ -37,7 +47,7 @@ def get_completeness(fasta_name):
                 if columns[0] == fasta_name:
                     return columns[-3]
     except FileNotFoundError:
-        print(f"File not found for {fasta_name}. Check mosdepth output.")
+        print(f"File not found for {fasta_name}. Check CheckM output.")
     
 #Get contamination from checkm results
 def get_contamination(fasta_name):
@@ -95,24 +105,30 @@ def get_sample_name(fasta_name):
                         "10-T3_apr21-22": "GAC9"     }
     return sample_mapping.get(sample.strip(), "No Sample")
 
-with open ("mag_summary_stats.tab", "w") as output_file:
+def get_edge_num(fasta_name):
+    return fasta_name.split("+")[1]
+
+with open ("./circos_plotting/mag_summary_stats.tab", "w") as output_file:
     # Get FASTA files in the directory (sans file extension)
     fasta_files = [f[:-6] for f in os.listdir() if f.endswith(".fasta")]
 
     sys.stdout = output_file
 
     # Print header
-    print("Sample\tClassification\tSize\tCompleteness\tContamination\tGC\ttRNA_genes\trRNA_genes\tClass2")
+    print("Sample\tEdge_num\tClassification\tSize\tCoverage\tCompleteness\tContamination\tGC\ttRNA_genes\trRNA_genes\tClass2\tFilename")
 
     for fasta_name in fasta_files:
         # Retrieve information for each column
         sample = get_sample_name(fasta_name)
+        edge = get_edge_num(fasta_name)
         classification, class2 = get_classification(fasta_name)
         size = get_size(fasta_name)
+        coverage = get_coverage(fasta_name)
         completeness = get_completeness(fasta_name)
         contamination = get_contamination(fasta_name)
         gc_percentage = calculate_gc_percentage(fasta_name)
         tRNA_genes = get_tRNA_genes(fasta_name)
         rRNA_genes = get_rRNA_genes(fasta_name)
+        filename = fasta_name
 
-        print(f"{sample}\t{classification}\t{size}\t{completeness}\t{contamination}\t{gc_percentage:.2f}\t{tRNA_genes}\t{rRNA_genes}\t{class2}")
+        print(f"{sample}\t{edge}\t{classification}\t{size}\t{coverage}\t{completeness}\t{contamination}\t{gc_percentage:.2f}\t{tRNA_genes}\t{rRNA_genes}\t{class2}\t{filename}")
